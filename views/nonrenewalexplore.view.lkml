@@ -111,6 +111,16 @@ view: nonrenewalexplore {
     sql: ${TABLE}."non_renewal_reason" ;;
   }
 
+  dimension: county_code {
+    type: string
+    sql: ${TABLE}."county_code" ;;
+}
+    dimension: protection_period_Name {
+      type: string
+      sql: ${TABLE}."protection_period_name" ;;
+}
+
+
   set: detail {
     fields: [
         bright_policy_id,
