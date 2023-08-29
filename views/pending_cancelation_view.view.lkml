@@ -2,7 +2,7 @@
 view: pending_cancelation_view {
   derived_table: {
     sql: -- All policies expired since PP start date
-      With Mort_Table as (select
+      With Mort_Table as (
        SELECT
   "nonpay_cancellations"
   ,"uw_cancellations"
