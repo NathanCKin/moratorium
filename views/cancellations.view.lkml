@@ -8,13 +8,13 @@ view: cancellations {
   ,"uw_cancellations"
   ,"xpirations"
   ,"uw_nonrenewal"
-  ,"Zip_Code"
+  ,"Zip_Code" as "county_code"
   ,"County"
   ,"Created_Date"
   ,"Created_By"
   ,"End_Date"
   ,"Exec_Order_Name"
-  ,"Protection_Period_Name"
+  ,"Protection_Period_Name" as
   ,"Start_Date"
   ,"Updated_Date"
 
@@ -23,7 +23,7 @@ FROM dwh_temp.idalia_moratorium
 
           )
       SELECT bp.id as bright_policy_id
-      , last_cancel.date, m.county, m.zip_code, m.protection_period_date
+      , last_cancel.date, m.*
       FROM bright_policies bp
       JOIN products pr ON bp.product_id = pr.id
       JOIN properties p ON bp.property_id = p.id
