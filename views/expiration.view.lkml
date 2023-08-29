@@ -3,54 +3,24 @@ view: expiration {
   derived_table: {
     sql: -- All policies expired since PP start date
 
-      With Mort_Table as (select
-    1 as nonpay_cancellations,
-    1 as uw_cancellations,
-    1 as expirations,
-    1 as uw_nonrenewal,
-    cast(12127 as int) as county_code,
-    'Ionia' as County,
-    '2023-07-19' as Created_Date,
-    'ken.hebel@kin.com' as Created_By,
-    '2023-08-05' as End_Date,
-    'Ian Order' as Exec_Order_Name,
-    'Ian Period' as Protection_Period_Name,
-    '2023-07-25' as Start_Date,
-    '2023-07-19'as Updated_Date
+      With Mort_Table as (SELECT
+  "nonpay_cancellations"
+  ,"uw_cancellations"
+  ,"xpirations"
+  ,"uw_nonrenewal"
+  ,"Zip_Code" as county_code
+  ,"County"
+  ,"Created_Date"
+  ,"Created_By"
+  ,"End_Date"
+  ,"Exec_Order_Name"
+  ,"Protection_Period_Name"
+  ,"Start_Date"
+  ,"Updated_Date"
 
+FROM dwh_temp.idalia_moratorium
 
-    union
-    select
-    1 as nonpay_cancellations,
-    1 as uw_cancellations,
-    1 as expirations,
-    1 as uw_nonrenewal,
-    cast(12091 as Int) as  Zip_Code,
-    'Ionia' as County ,
-    '2023-07-19' as Created_Date,
-    'ken.hebel@kin.com' as Created_By,
-    '2023-08-05' as End_Date,
-    'Ian Order' as Exec_Order_Name,
-    'Ian Period'as Protection_Period_Name,
-    '2023-07-25' as Start_Date,
-    '2023-07-19' as Updated_Date
-
-    union
-
-    select
-    1 as nonpay_cancellations,
-    1 as uw_cancellations,
-    1 as expirations,
-    1 as uw_nonrenewal,
-    cast(64231 as int) as Zip_Code,
-    'Ionia' as County ,
-    '2023-07-19' as Created_Date,
-    'ken.hebel@kin.com' as Created_By,
-    '2023-08-05'as End_Date,
-    'Ian Order' as Exec_Order_Name,
-    'Ian Period'as Protection_Period_Name,
-    '2023-07-25'as Start_Date,
-    '2023-07-19' as Updated_Date)
+      )
 
 
          SELECT bp.id as bright_policy_id
