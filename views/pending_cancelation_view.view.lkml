@@ -8,7 +8,7 @@ view: pending_cancelation_view {
   ,"uw_cancellations"
   ,"xpirations"
   ,"uw_nonrenewal"
-  ,"Zip_Code"
+  ,"Zip_Code" as county_code
   ,"County"
   ,"Created_Date"
   ,"Created_By"
