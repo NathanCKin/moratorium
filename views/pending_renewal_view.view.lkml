@@ -2,7 +2,27 @@
 view: pending_renewal_view {
   derived_table: {
     sql: -- All policies expired since PP start date
-      
+            With Mort_Table as (select
+       SELECT
+  "nonpay_cancellations"
+  ,"uw_cancellations"
+  ,"xpirations"
+  ,"uw_nonrenewal"
+  ,"Zip_Code"
+  ,"County"
+  ,"Created_Date"
+  ,"Created_By"
+  ,"End_Date"
+  ,"Exec_Order_Name"
+  ,"Protection_Period_Name"
+  ,"Start_Date"
+  ,"Updated_Date"
+
+FROM dwh_temp.idalia_moratorium
+
+
+          )
+
       SELECT bp.id as bright_policy_id
       , bp.status
       , last_non_renewed.non_renewal_date
@@ -12,6 +32,8 @@ view: pending_renewal_view {
       JOIN properties p ON bp.property_id = p.id
       JOIN addresses a ON a.id = p.address_id
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
+            LEFT JOIN Mort_Table m on cast(m.county_code as int) = cast(a.county_fips as int)
+
       LEFT JOIN (
           SELECT distinct
             pe.bright_policy_id
@@ -27,16 +49,16 @@ view: pending_renewal_view {
           WHERE true=true
             AND pe.type = 'PolicyEvent::NonRenewal'
             AND pe.status in('success', 'pending')
-            AND pe.date between '2023-07-01' AND '2023-07-30'
+            --AND pe.date between '2023-07-01' AND '2023-07-30'
             and er.category != 'insured_request'
       ) as last_non_renewed
         on bp.id = last_non_renewed.bright_policy_id
       WHERE true=true
       -- AND last_non_renewed.non_renewal_date < pp.started_at
       AND bp.status = 'in_force'
-      AND last_non_renewed.non_renewal_date between '2023-07-01' AND '2023-07-30'
+      AND last_non_renewed.non_renewal_date BETWEEN  cast(m.start_date as date) and cast(m.end_date as date)
       AND current_date <= last_non_renewed.non_renewal_date
-      ORDER BY bp.id DESC 
+      ORDER BY bp.id DESC
       LIMIT 20 ;;
   }
 
@@ -68,9 +90,9 @@ view: pending_renewal_view {
   set: detail {
     fields: [
         bright_policy_id,
-	status,
-	non_renewal_date,
-	non_renewal_reason
+  status,
+  non_renewal_date,
+  non_renewal_reason
     ]
   }
 }
