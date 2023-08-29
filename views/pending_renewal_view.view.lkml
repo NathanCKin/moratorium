@@ -27,6 +27,7 @@ FROM dwh_temp.idalia_moratorium
       , bp.status
       , last_non_renewed.non_renewal_date
       , last_non_renewed.non_renewal_reason
+      ,m.*
       FROM bright_policies bp
       JOIN products pr ON bp.product_id = pr.id
       JOIN properties p ON bp.property_id = p.id
