@@ -28,16 +28,16 @@ FROM dwh_temp.idalia_moratorium
 
       , m.county_code
       ,m.protection_period_name
-      FROM bright_policies bp
-      JOIN products pr ON bp.product_id = pr.id
-      JOIN properties p ON bp.property_id = p.id
-      JOIN addresses a ON a.id = p.address_id
+      FROM dotcom.bright_policies bp
+      JOIN dotcom.products pr ON bp.product_id = pr.id
+      JOIN dotcom.properties p ON bp.property_id = p.id
+      JOIN dotcom.addresses a ON a.id = p.address_id
       left JOIN Mort_Table m on cast(m.county_code as int) = cast(a.county_fips as int)
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
       LEFT JOIN LATERAL (
           SELECT pe.bright_policy_id
           , pe.date
-          FROM policy_events pe
+          FROM dotcom.policy_events pe
           WHERE 0=0
           AND pe.bright_policy_id = bp.id
           AND pe.type = 'PolicyEvent::Expiration'
