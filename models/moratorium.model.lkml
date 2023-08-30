@@ -1,5 +1,5 @@
 # Define the database connection to be used for this model.
-connection: "aws_production"
+connection: "data_castle"
 
 # include all the views
 include: "/views/**/*.view.lkml"
