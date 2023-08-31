@@ -3,36 +3,17 @@ view: expiration {
   derived_table: {
     sql: -- All policies expired since PP start date
 
-      With Mort_Table as (SELECT
-  "nonpay_cancellations"
-  ,"uw_cancellations"
-  ,"xpirations"
-  ,"uw_nonrenewal"
-  ,"Zip_Code" as county_code
-  ,"County"
-  ,"Created_Date"
-  ,"Created_By"
-  ,"End_Date"
-  ,"Exec_Order_Name"
-  ,"Protection_Period_Name"
-  ,"Start_Date"
-  ,"Updated_Date"
-
-FROM dwh_temp.idalia_moratorium
-
-      )
 
 
          SELECT bp.id as bright_policy_id
       , last_expiration.date
 
-      , m.county_code
-      ,m.protection_period_name
+   ,m.*
       FROM dotcom.bright_policies bp
       JOIN dotcom.products pr ON bp.product_id = pr.id
       JOIN dotcom.properties p ON bp.property_id = p.id
       JOIN dotcom.addresses a ON a.id = p.address_id
-      left JOIN Mort_Table m on cast(m.county_code as int) = cast(a.county_fips as int)
+  LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.zip_code as varchar(max)) = cast(a.county_fips as varchar(max))
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
       LEFT JOIN LATERAL (
           SELECT pe.bright_policy_id
