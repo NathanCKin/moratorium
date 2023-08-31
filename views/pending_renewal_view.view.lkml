@@ -70,6 +70,50 @@ view: pending_renewal_view {
     sql: ${TABLE}."non_renewal_reason" ;;
   }
 
+  dimension: county_code {
+    type: number
+    sql: ${TABLE}."county_code" ;;
+  }
+
+  dimension: county {
+    type: string
+    sql: ${TABLE}."county" ;;
+  }
+
+  dimension: created_date {
+    type: string
+    sql: ${TABLE}."created_date" ;;
+  }
+
+  dimension: created_by {
+    type: string
+    sql: ${TABLE}."created_by" ;;
+  }
+
+  dimension: end_date {
+    type: string
+    sql: ${TABLE}."end_date" ;;
+  }
+
+  dimension: exec_order_name {
+    type: string
+    sql: ${TABLE}."exec_order_name" ;;
+  }
+
+  dimension: protection_period_name {
+    type: string
+    sql: ${TABLE}."protection_period_name" ;;
+  }
+
+  dimension: start_date {
+    type: string
+    sql: ${TABLE}."start_date" ;;
+  }
+
+  dimension: updated_date {
+    type: string
+    sql: ${TABLE}."updated_date" ;;
+  }
   set: detail {
     fields: [
         bright_policy_id,
