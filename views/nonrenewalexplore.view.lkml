@@ -3,42 +3,23 @@ view: nonrenewalexplore {
   derived_table: {
     sql: -- All policies expired since PP start date
 
-      With Mort_Table as (      SELECT
-  "nonpay_cancellations"
-  ,"uw_cancellations"
-  ,"xpirations"
-  ,"uw_nonrenewal"
-  ,"Zip_Code" as county_code
-  ,"County"
-  ,"Created_Date"
-  ,"Created_By"
-  ,"End_Date"
-  ,"Exec_Order_Name"
-  ,"Protection_Period_Name"
-  ,"Start_Date"
-  ,"Updated_Date"
-
-FROM dwh_temp.idalia_moratorium
-
-    )
 
       SELECT bp.id as bright_policy_id
       , last_non_renewed.non_renewal_date
       , last_non_renewed.non_renewal_reason
-      , m.county_code
-      ,m.protection_period_name
-      FROM bright_policies bp
-      JOIN products pr ON bp.product_id = pr.id
-      JOIN properties p ON bp.property_id = p.id
-      JOIN addresses a ON a.id = p.address_id
-      left JOIN Mort_Table m on cast(m.county_code as int) = cast(a.county_fips as int)
+,m.*
+      FROM dotcom.bright_policies bp
+      JOIN dotcom.products pr ON bp.product_id = pr.id
+      JOIN dotcom.properties p ON bp.property_id = p.id
+      JOIN dotcom.addresses a ON a.id = p.address_id
+      LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.zip_code as varchar(max)) = cast(a.county_fips as varchar(max))
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
       LEFT JOIN (
           SELECT distinct
             pe.bright_policy_id
           , max(pe.date) over(partition by pe.bright_policy_id) as non_renewal_date
           , first_value(er.category) over(partition by pe.bright_policy_id order by pe.date desc, pe.created_at desc rows between unbounded preceding and unbounded following) as non_renewal_reason
-          FROM policy_events as pe
+          FROM dotcom.policy_events as pe
           LEFT JOIN policy_event_reasons as per
             on true=true
             and pe.id = per.policy_event_id
