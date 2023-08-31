@@ -61,7 +61,7 @@ view: nonrenewalexplore {
     sql: ${TABLE}."non_renewal_reason" ;;
   }
 
-  dimension: county_code {
+  dimension: zip_code {
     type: string
     sql: ${TABLE}."county_code" ;;
 }
