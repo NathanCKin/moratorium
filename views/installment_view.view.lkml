@@ -12,7 +12,7 @@ view: installment_view {
       JOIN dotcom.addresses a ON a.id = p.address_id
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
       JOIN dotcom.billing_scheduled_transactions bst ON bp.id = bst.bright_policy_id
-  LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.zip_code as int) = cast(a.county_fips as int)
+  LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.zip_code as varchar(max)) = cast(a.county_fips as varchar(max))
         AND bst.installment_number IN (2,3,4)
         -- AND bst.due_date BETWEEN pp.starts_at AND pp.ends_at
         AND bst.due_date BETWEEN  cast(m.start_date as date) and cast(m.end_date as date)
