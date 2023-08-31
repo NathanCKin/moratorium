@@ -7,9 +7,9 @@ view: installment_view {
       SELECT bp.id
       , bst.due_date
       , m.*
-      FROM bright_policies bp
-      JOIN properties p ON bp.property_id = p.id
-      JOIN addresses a ON a.id = p.address_id
+      FROM dotcom.bright_policies bp
+      JOIN dotcom.properties p ON bp.property_id = p.id
+      JOIN dotcom.addresses a ON a.id = p.address_id
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
       JOIN billing_scheduled_transactions bst ON bp.id = bst.bright_policy_id
   LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.county_code as int) = cast(a.county_fips as int)
@@ -18,7 +18,7 @@ view: installment_view {
         AND bst.due_date BETWEEN  cast(m.start_date as date) and cast(m.end_date as date)
       WHERE 0=0
       AND bp.status IN ('in_force')
-      ORDER BY bp.id DESC LIMIT 10 ;;
+      ORDER BY bp.id DESC  ;;
   }
 
   measure: count {
