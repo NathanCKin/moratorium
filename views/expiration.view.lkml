@@ -48,7 +48,7 @@ view: expiration {
     sql: ${TABLE}."date" ;;
   }
 
-  dimension: county_code {
+  dimension: zip_code {
     type: string
     sql: ${TABLE}."county_code" ;;
   }
