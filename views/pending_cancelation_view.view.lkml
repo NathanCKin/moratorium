@@ -9,7 +9,7 @@ view: pending_cancelation_view {
       , cancelled.cancelled_date
       , cancelled.cancelled_reason
       ,m.*
-      FROM bright_policies bp
+      FROM dotcom.bright_policies bp
             JOIN dotcom.properties p ON bp.property_id = p.id
             JOIN dotcom.addresses a ON a.id = p.address_id
 
