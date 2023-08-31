@@ -25,6 +25,13 @@ persist_with: moratorium_default_datagroup
 # Typically, join parameters require that you define the join type, join relationship, and a sql_on clause.
 # Each joined view also needs to define a primary key.
 
+explore: pending_cancelation_view{}
+
+explore: pending_renewal_view{}
+
+explore: installment_view{}
+
+
 explore: nonrenewalexplore{}
 
 explore: nonrenewed_determination{}
