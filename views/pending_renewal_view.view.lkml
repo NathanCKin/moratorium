@@ -22,7 +22,7 @@ view: pending_renewal_view {
             pe.bright_policy_id
           , max(pe.date) over(partition by pe.bright_policy_id) as non_renewal_date
           , first_value(er.category) over(partition by pe.bright_policy_id order by pe.date desc, pe.created_at desc rows between unbounded preceding and unbounded following) as non_renewal_reason
-          FROM policy_events as pe
+          FROM dotcom.policy_events as pe
           LEFT JOIN dotcom.policy_event_reasons as per
             on true=true
             and pe.id = per.policy_event_id
