@@ -56,9 +56,9 @@ view: installment_view {
     sql: ${TABLE}."uw_nonrenewal" ;;
   }
 
-  dimension: county_code {
+  dimension: zip_code {
     type: number
-    sql: ${TABLE}."county_code" ;;
+    sql: ${TABLE}."zip_code" ;;
   }
 
   dimension: county {
@@ -109,7 +109,7 @@ view: installment_view {
   uw_cancellations,
   expirations,
   uw_nonrenewal,
-  county_code,
+  zip_code,
   county,
   created_date,
   created_by,

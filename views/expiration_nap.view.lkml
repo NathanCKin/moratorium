@@ -2,13 +2,14 @@
 view: expiration_nap {
   derived_table: {
     sql: -- All policies expired since PP start date
-      
+
       SELECT bp.id as bright_policy_id
       , last_expiration.date
       FROM bright_policies bp
       JOIN products pr ON bp.product_id = pr.id
       JOIN properties p ON bp.property_id = p.id
       JOIN addresses a ON a.id = p.address_id
+        LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.zip_code as varchar(max)) = cast(a.county_fips as varchar(max))
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
       LEFT JOIN LATERAL (
           SELECT pe.bright_policy_id
@@ -46,7 +47,7 @@ view: expiration_nap {
   set: detail {
     fields: [
         bright_policy_id,
-	date
+  date
     ]
   }
 }

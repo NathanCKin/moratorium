@@ -11,7 +11,7 @@ view: cancellations {
       JOIN dotcom.addresses a ON a.id = p.address_id
        LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.zip_code as varchar(max)) = cast(a.county_fips as varchar(max))
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
-      LEFT JOIN LATERAL (
+      LEFT JOIN  LATERAL(
           SELECT pe.bright_policy_id
           , pe.date
           FROM dotcom.policy_events pe
@@ -46,6 +46,7 @@ view: cancellations {
     type: date
     sql: ${TABLE}."date" ;;
   }
+
 
   set: detail {
     fields: [

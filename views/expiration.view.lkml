@@ -2,10 +2,7 @@
 view: expiration {
   derived_table: {
     sql: -- All policies expired since PP start date
-
-
-
-         SELECT bp.id as bright_policy_id
+     SELECT bp.id as bright_policy_id
       , last_expiration.date
 
    ,m.*
@@ -15,16 +12,17 @@ view: expiration {
       JOIN dotcom.addresses a ON a.id = p.address_id
   LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.zip_code as varchar(max)) = cast(a.county_fips as varchar(max))
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
-      LEFT JOIN LATERAL (
+      LEFT JOIN  (
           SELECT pe.bright_policy_id
           , pe.date
           FROM dotcom.policy_events pe
+          left join dotcom.bright_policies bp on pe.bright_policy_id =  bp.id
           WHERE 0=0
           AND pe.bright_policy_id = bp.id
           AND pe.type = 'PolicyEvent::Expiration'
           AND pe.status = 'success'
           ORDER BY pe.created_at DESC
-          LIMIT 1
+
       ) last_expiration ON TRUE
       WHERE 0=0
       -- AND last_expiration.date < pp.started_at
