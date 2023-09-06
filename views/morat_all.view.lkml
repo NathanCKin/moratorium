@@ -8,6 +8,7 @@ view: morat_all {
       ,last_cancel.policy_event_date
       ,last_cancel.policy_event_status
       ,last_cancel.event_reason_code
+      .last_cancel.
       ,m.*
       from       dotcom.bright_policies as bp
       inner join dotcom.products as pr ON bp.product_id = pr.id
@@ -33,7 +34,7 @@ view: morat_all {
                             group by 1) as per
                             on per.policy_event_id = pe.id
                   where 0=0
-                  --and pe.type = 'PolicyEvent::Cancellation'
+                  and pe.type = 'PolicyEvent::Cancellation'
                   and pe.status in ('success','pending')
                   and pe.deleted_at is null
                   ) last_cancel on last_cancel.bright_policy_id = bp.id
