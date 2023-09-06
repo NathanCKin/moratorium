@@ -2,7 +2,7 @@
 view: cancel_email {
   derived_table: {
     sql: -- All policies expired since PP start date
-      
+
       SELECT bp.id as bright_policy_id
       ,users.email as primary_applicant_email
       ,last_cancel.date
@@ -12,13 +12,13 @@ view: cancel_email {
       JOIN dotcom.properties p ON bp.property_id = p.id
       JOIN dotcom.addresses a ON a.id = p.address_id
       LEFT JOIN dwh_temp.idalia_moratorium  m on cast(m.zip_code as varchar(max)) = cast(a.county_fips as varchar(max))
-      
-      --zip code 
+
+      --zip code
       left join dotcom.policy_contacts pc on pc.policy_id = bp.id
       left join dotcom.people people on people.id = pc.contact_id
       left join dotcom.users users on people.user_id = users.id
-      
-      
+
+
       -- JOIN protection_periods pp ON a.county_fips = ANY(pp.counties_list)
       LEFT JOIN  (
           SELECT pe.bright_policy_id
@@ -36,16 +36,16 @@ view: cancel_email {
       AND last_cancel.date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
       --LEFT JOIN dwh_temp.idalia_moratorium m on cast(m.zip_code as varchar(max)) = cast(a.county_fips as varchar(max))
       AND bp.status = 'cancelled'
-      
-      and pc.contact_type = 'Person'
-      and pc.type = 'PolicyContacts::Applicant'
-      and pc.deleted_at is null 
-      and pc.policy_type = 'BrightPolicy' 
-      and pc.data <> 'co_applicant'
-      and people.deleted_at is null
-      
-      ORDER BY bp.id DESC ;
-      
+
+      --and pc.contact_type = 'Person'
+      --and pc.type = 'PolicyContacts::Applicant'
+      --and pc.deleted_at is null
+      --and pc.policy_type = 'BrightPolicy'
+      --and pc.data <> 'co_applicant'
+     -- and people.deleted_at is null
+
+     ;
+
       -- select distinct type
       -- from public.policy_events ;;
   }
@@ -138,21 +138,21 @@ view: cancel_email {
   set: detail {
     fields: [
         bright_policy_id,
-	primary_applicant_email,
-	date,
-	nonpay_cancellations,
-	uw_cancellations,
-	xpirations,
-	uw_nonrenewal,
-	zip_code,
-	county,
-	created_date,
-	created_by,
-	end_date,
-	exec_order_name,
-	protection_period_name,
-	start_date,
-	updated_date
+  primary_applicant_email,
+  date,
+  nonpay_cancellations,
+  uw_cancellations,
+  xpirations,
+  uw_nonrenewal,
+  zip_code,
+  county,
+  created_date,
+  created_by,
+  end_date,
+  exec_order_name,
+  protection_period_name,
+  start_date,
+  updated_date
     ]
   }
 }
