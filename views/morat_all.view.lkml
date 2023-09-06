@@ -25,32 +25,32 @@ view: morat_all {
                   , row_number() over(partition by pe.bright_policy_id order by pe.created_at desc) as row_num
                   from dotcom.policy_events pe
                   left join (select per.policy_event_id
-                            , listagg(er.category||' : '||er.reason_code,', ') within group(order by per.created_at desc) as event_reason_code 
+                            , listagg(er.category||' : '||er.reason_code,', ') within group(order by per.created_at desc) as event_reason_code
                             from dotcom.policy_event_reasons as per
-                            left join dotcom.event_reasons as er 
-                            on er.id = per.event_reason_id 
+                            left join dotcom.event_reasons as er
+                            on er.id = per.event_reason_id
                             and er.is_active='true'
                             group by 1) as per
                             on per.policy_event_id = pe.id
                   where 0=0
-                  and pe.type = 'PolicyEvent::Cancellation'
+                  --and pe.type = 'PolicyEvent::Cancellation'
                   and pe.status in ('success','pending')
                   and pe.deleted_at is null
-                  ) last_cancel on last_cancel.bright_policy_id = bp.id 
+                  ) last_cancel on last_cancel.bright_policy_id = bp.id
                              --and last_cancel.row_num=1
-      
+
       where 1=1
       and last_cancel.policy_event_date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
       --and bp.status = 'cancelled'
       and bp.status != 'quote'
       and pc.contact_type = 'Person'
       and pc.type = 'PolicyContacts::Applicant'
-      and pc.deleted_at is null 
-      and pc.policy_type = 'BrightPolicy' 
+      and pc.deleted_at is null
+      and pc.policy_type = 'BrightPolicy'
       and json_extract_path_text(pc.data,'co_applicant',true) = 'false'
       and people.deleted_at is null
       and last_cancel.event_reason_code not like '%insured_request%'
-      
+
       order by bp.id, last_cancel.policy_event_id ;;
   }
 
@@ -162,25 +162,25 @@ view: morat_all {
   set: detail {
     fields: [
         bright_policy_id,
-	policy_status,
-	primary_applicant_email,
-	policy_event_id,
-	policy_event_date,
-	policy_event_status,
-	event_reason_code,
-	nonpay_cancellations,
-	uw_cancellations,
-	xpirations,
-	uw_nonrenewal,
-	zip_code,
-	county,
-	created_date,
-	created_by,
-	end_date,
-	exec_order_name,
-	protection_period_name,
-	start_date,
-	updated_date
+  policy_status,
+  primary_applicant_email,
+  policy_event_id,
+  policy_event_date,
+  policy_event_status,
+  event_reason_code,
+  nonpay_cancellations,
+  uw_cancellations,
+  xpirations,
+  uw_nonrenewal,
+  zip_code,
+  county,
+  created_date,
+  created_by,
+  end_date,
+  exec_order_name,
+  protection_period_name,
+  start_date,
+  updated_date
     ]
   }
 }
