@@ -8,7 +8,6 @@ view: morat_all {
       ,last_cancel.policy_event_date
       ,last_cancel.policy_event_status
       ,last_cancel.event_reason_code
-      .last_cancel.
       ,m.*
       from       dotcom.bright_policies as bp
       inner join dotcom.products as pr ON bp.product_id = pr.id
