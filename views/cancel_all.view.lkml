@@ -2,7 +2,7 @@
 view: cancel_all {
   derived_table: {
     sql: -- All policies expired since PP start date
-      
+
       SELECT bp.id as bright_policy_id
       , pe.date,
       m.*
@@ -18,14 +18,14 @@ view: cancel_all {
           , pe.date
           FROM dotcom.policy_events pe
           left join dotcom.bright_policies bp2 on pe.bright_policy_id = bp2.id
-          WHERE 
+          WHERE
           --AND pe.bright_policy_id = bp2.id
           pe.type = 'PolicyEvent::Cancellation'
           AND pe.status = 'success'
           ORDER BY pe.created_at DESC
-        
+
       ) pe ON pe.bright_policy_id = bp.id
-      
+
             --zip code
             left join dotcom.policy_contacts pc on pc.policy_id = bp.id
             left join dotcom.people people on people.id = pc.contact_id
@@ -34,16 +34,16 @@ view: cancel_all {
       -- AND last_expiration.date < pp.started_at
       pe.date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
       AND bp.status = 'cancelled'
-      and primary_applicant_email is not null 
+      and primary_applicant_email is not null
       ORDER BY bp.id DESC ;
-      
+
       -- select distinct type
-      -- from public.policy_events ;;
+      -- from public.policy_events
   }
 
   measure: count {
     type: count
-    drill_fields: [detail*]
+    drill_fields: [detail*] ;;
   }
 
   dimension: bright_policy_id {
@@ -129,21 +129,21 @@ view: cancel_all {
   set: detail {
     fields: [
         bright_policy_id,
-	date,
-	nonpay_cancellations,
-	uw_cancellations,
-	xpirations,
-	uw_nonrenewal,
-	zip_code,
-	county,
-	created_date,
-	created_by,
-	end_date,
-	exec_order_name,
-	protection_period_name,
-	start_date,
-	updated_date,
-	primary_applicant_email
+  date,
+  nonpay_cancellations,
+  uw_cancellations,
+  xpirations,
+  uw_nonrenewal,
+  zip_code,
+  county,
+  created_date,
+  created_by,
+  end_date,
+  exec_order_name,
+  protection_period_name,
+  start_date,
+  updated_date,
+  primary_applicant_email
     ]
   }
 }
