@@ -35,10 +35,8 @@ view: cancel_all {
       pe.date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
       AND bp.status = 'cancelled'
       and primary_applicant_email is not null
-      ORDER BY bp.id DESC ;
 
-      -- select distinct type
-      -- from public.policy_events
+
   }
 
   measure: count {
