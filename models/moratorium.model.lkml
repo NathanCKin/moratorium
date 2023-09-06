@@ -27,9 +27,6 @@ persist_with: moratorium_default_datagroup
 
 explore: cancel_email {}
 
-explore: cancel_end {}
-explore: cancelled_past {}
-
 explore: pending_cancelation_view{}
 
 explore: pending_renewal_view{}
