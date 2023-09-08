@@ -91,6 +91,10 @@ view: morat_all {
     sql: ${TABLE}.policy_event_status ;;
   }
 
+  dimension: policy_event_type{
+    type: string
+    sql: ${TABLE}.policy_event_type ;;
+  }
   dimension: event_reason_code {
     type: string
     sql: ${TABLE}.event_reason_code ;;
