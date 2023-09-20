@@ -13,9 +13,9 @@ view: protection_period_policies {
             , a.county_fips
             , a.county
             , date(c.effective_date) as policy_inception_date
-            , pr.state           as product_state
-            , pr.line            as product_line
-            , pr.effective_date  as product_effective_date
+            , pr.state                  as product_state
+            , pr.line                   as product_line
+            , date(pr.effective_date)   as product_effective_date
             , case when m.start_date is not null then 'true' else 'false' end as fips_in_protection_period
             , date(m.start_date) as protection_period_start_date
             , date(m.end_date) as protection_period_end_date
@@ -52,6 +52,13 @@ view: protection_period_policies {
   dimension: bright_policy_id {
     type: number
     sql: ${TABLE}.bright_policy_id ;;
+    value_format: "0"
+    primary_key: yes
+    link: {
+      label: "Kinfo"
+      url:"https://app.kin.com/kintranet/policy_details/{{value}}"
+      icon_url: "https://www.kin.com/build/images/logos/kin-primary.svg"
+    }
   }
 
   dimension: policy_status {
@@ -62,6 +69,12 @@ view: protection_period_policies {
   dimension: property_id {
     type: number
     sql: ${TABLE}.property_id ;;
+    value_format: "0"
+    link: {
+      label: "Kinfo"
+      url:"https://app.kin.com/kintranet/properties/{{value}}"
+      icon_url: "https://www.kin.com/build/images/logos/kin-primary.svg"
+    }
   }
 
   dimension: full_policy_number {
@@ -114,8 +127,8 @@ view: protection_period_policies {
     sql: ${TABLE}.product_line ;;
   }
 
-  dimension_group: product_effective_date {
-    type: time
+  dimension: product_effective_date {
+    type: date
     sql: ${TABLE}.product_effective_date ;;
   }
 
@@ -184,7 +197,7 @@ view: protection_period_policies {
   policy_inception_date,
   product_state,
   product_line,
-  product_effective_date_time,
+  product_effective_date,
   fips_in_protection_period,
   protection_period_start_date,
   protection_period_end_date,
