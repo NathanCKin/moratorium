@@ -4,6 +4,7 @@ view: morat_all {
     sql: select bp.id as bright_policy_id
       ,bp.status   as policy_status
       ,bp.property_id
+      ,date(coverages.effective_date) as policy_inception_date
       ,users.email as primary_applicant_email
       ,last_cancel.policy_event_id
       ,last_cancel.policy_event_effective_date
@@ -20,6 +21,7 @@ view: morat_all {
       left  join dotcom.policy_contacts as pc on pc.policy_id = bp.id
       left  join dotcom.people on people.id = pc.contact_id
       left  join dotcom.users on people.user_id = users.id
+      left  join dotcom.coverages on coverages.id = bp.coverage_id
       left  join (select pe.bright_policy_id
                   , pe."date" as policy_event_effective_date
                   , pe.id as policy_event_id
@@ -56,6 +58,7 @@ view: morat_all {
       and json_extract_path_text(pc.data,'co_applicant',true) = 'false'
       and people.deleted_at is null
       and last_cancel.event_reason_code not like '%insured_request%'
+      and date(coverages.effective_date) < '2023-09-01'
 
       order by bp.id, last_cancel.policy_event_id ;;
   }
@@ -110,6 +113,11 @@ view: morat_all {
   dimension: policy_event_transaction_date {
     type: date
     sql: ${TABLE}.policy_event_transaction_date ;;
+  }
+
+  dimension: policy_inception_date {
+    type: date
+    sql: ${TABLE}.policy_inception_date ;;
   }
 
   dimension: policy_event_status {
