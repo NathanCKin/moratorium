@@ -26,10 +26,8 @@ persist_with: moratorium_default_datagroup
 # Each joined view also needs to define a primary key.
 
 explore: protection_period_policies {
-  #group_label: "1. Mart Data Castle"
   label: "Protection Period"
   view_label: "Policies"
-  #fields: [ALL_FIELDS*, -mart_operational_report_snapsheet.frequency,-mart_operational_report_snapsheet.loss_ratio]
 
   join: protection_period_claims {
     type: left_outer
@@ -38,12 +36,19 @@ explore: protection_period_policies {
     sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_claims.bright_policy_id} ;;
   }
 
-  #join: mart_people {
-  #  view_label: "People"
-  #  type: left_outer
-  #  relationship: one_to_many
-  #  sql_on: lower(${mart_people.email_address})=lower(${surveymonkey_claims_responses.email_address}) ;;
-  #}
+  join: protection_period_policy_events {
+    view_label: "Policy Events"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_policy_events.bright_policy_id}  ;;
+  }
+
+  join: protection_period_correcting_events {
+    view_label: "PP Correcting Events"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_correcting_events.bright_policy_id}  ;;
+  }
 }
 
 
