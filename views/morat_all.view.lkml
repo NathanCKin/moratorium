@@ -68,6 +68,7 @@ view: morat_all {
   dimension: bright_policy_id {
     type: number
     sql: ${TABLE}.bright_policy_id ;;
+    value_format: "0"
     link: {
       label: "Kinfo"
       url:"https://app.kin.com/kintranet/policy_details/{{value}}"
@@ -78,6 +79,7 @@ view: morat_all {
   dimension: property_id {
     type: number
     sql: ${TABLE}.property_id ;;
+    value_format: "0"
     link: {
       label: "Kinfo"
       url:"https://app.kin.com/kintranet/properties/{{value}}"
