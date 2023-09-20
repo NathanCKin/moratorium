@@ -62,11 +62,6 @@ view: protection_period_correcting_events {
     distribution_style:  all
   }
 
-  measure: count {
-    type: count
-    drill_fields: [detail*]
-  }
-
   dimension: bright_policy_id {
     type: number
     sql: ${TABLE}.bright_policy_id ;;

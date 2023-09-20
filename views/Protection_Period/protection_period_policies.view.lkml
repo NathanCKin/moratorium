@@ -49,11 +49,6 @@ view: protection_period_policies {
     distribution_style:  all
   }
 
-  measure: count {
-    type: count
-    drill_fields: [detail*]
-  }
-
   dimension: bright_policy_id {
     type: number
     sql: ${TABLE}.bright_policy_id ;;
@@ -169,9 +164,14 @@ view: protection_period_policies {
     sql: ${TABLE}.primary_applicant_person_id ;;
   }
 
+  dimension: policy_inception_before_cutoff {
+    type: yesno
+    sql: case when datediff(days,${policy_inception_date},${protection_period_policy_inception_cutoff}) > 0 then true else false end ;;
+  }
+
   set: detail {
     fields: [
-        bright_policy_id,
+  bright_policy_id,
   policy_status,
   property_id,
   full_policy_number,
