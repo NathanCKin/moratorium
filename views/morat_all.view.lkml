@@ -5,7 +5,7 @@ view: morat_all {
       ,bp.status   as policy_status
       ,users.email as primary_applicant_email
       ,last_cancel.policy_event_id
-      ,last_cancel.policy_event_date
+      ,last_cancel.policy_event_effective_date
       ,last_cancel.policy_event_status
       ,last_cancel.event_reason_code
       ,last_cancel.policy_event_type
@@ -20,7 +20,7 @@ view: morat_all {
       left  join dotcom.people on people.id = pc.contact_id
       left  join dotcom.users on people.user_id = users.id
       left  join (select pe.bright_policy_id
-                  , pe."date" as policy_event_date
+                  , pe."date" as policy_event_effective_date
                   , pe.id as policy_event_id
                   , pe.status as policy_event_status
                   , per.event_reason_code
@@ -45,7 +45,7 @@ view: morat_all {
 
       where 1=1
       and last_cancel.policy_event_transaction_date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
-      --and last_cancel.policy_event_date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
+      --and last_cancel.policy_event_effective_date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
       --and bp.status = 'cancelled'
       and bp.status != 'quote'
       and pc.contact_type = 'Person'
@@ -84,9 +84,9 @@ view: morat_all {
     sql: ${TABLE}.policy_event_id ;;
   }
 
-  dimension: policy_event_date {
+  dimension: policy_event_effective_date {
     type: date
-    sql: ${TABLE}.policy_event_date ;;
+    sql: ${TABLE}.policy_event_effective_date ;;
   }
 
   dimension: policy_event_transaction_date {
@@ -179,7 +179,7 @@ view: morat_all {
   policy_status,
   primary_applicant_email,
   policy_event_id,
-  policy_event_date,
+  policy_event_effective_date,
   policy_event_transaction_date,
   policy_event_status,
   event_reason_code,
