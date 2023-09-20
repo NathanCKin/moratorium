@@ -87,9 +87,22 @@ view: protection_period_correcting_events {
     sql: ${TABLE}.policy_event_transaction_date ;;
   }
 
-  dimension_group: policy_event_created_at {
-    type: time
+  dimension: policy_event_created_at {
+    type: date_time
     sql: ${TABLE}.policy_event_created_at ;;
+  }
+
+  dimension: policy_event_claims_relevant {
+    type: yesno
+    sql: case when ${policy_event_type} in ("PolicyEvent::ExpirationProtectionApplied","PolicyEvent::ExpiredCorrected","PolicyEvent::Extension","PolicyEvent::NonPayCancellationProtectionApplied")
+              then true else false end;;
+  }
+
+  measure: count_of_pp_correcting_events {
+    description: "Distinct count of protection period correcting policy events."
+    type: count_distinct
+    sql: ${bright_policy_id} ;;
+    drill_fields: [detail*]
   }
 
   set: detail {
@@ -99,7 +112,7 @@ view: protection_period_correcting_events {
   policy_event_status,
   policy_event_effective_date,
   policy_event_transaction_date,
-  policy_event_created_at_time
+  policy_event_created_at
     ]
   }
 }
