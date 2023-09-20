@@ -49,6 +49,13 @@ explore: protection_period_policies {
     relationship: one_to_many
     sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_correcting_events.bright_policy_id}  ;;
   }
+
+  join: protection_period_critical_notices {
+    view_label: "PP Critical Notices"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_critical_notices.bright_policy_id}  ;;
+  }
 }
 
 
