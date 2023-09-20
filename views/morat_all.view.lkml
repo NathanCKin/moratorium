@@ -9,6 +9,7 @@ view: morat_all {
       ,last_cancel.policy_event_status
       ,last_cancel.event_reason_code
       ,last_cancel.policy_event_type
+      ,last_cancel.policy_event_transaction_date
       ,m.*
       from       dotcom.bright_policies as bp
       inner join dotcom.products as pr ON bp.product_id = pr.id
@@ -23,7 +24,8 @@ view: morat_all {
                   , pe.id as policy_event_id
                   , pe.status as policy_event_status
                   , per.event_reason_code
-                  ,pe.type as policy_event_type
+                  , pe.type as policy_event_type
+                  , pe.transaction_date as policy_event_transaction_date
                   , row_number() over(partition by pe.bright_policy_id order by pe.created_at desc) as row_num
                   from dotcom.policy_events pe
                   left join (select per.policy_event_id
@@ -42,7 +44,8 @@ view: morat_all {
                              --and last_cancel.row_num=1
 
       where 1=1
-      and last_cancel.policy_event_date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
+      and last_cancel.policy_event_transaction_date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
+      --and last_cancel.policy_event_date BETWEEN cast(m.start_date as date) and cast(m.end_date as date)
       --and bp.status = 'cancelled'
       and bp.status != 'quote'
       and pc.contact_type = 'Person'
@@ -84,6 +87,11 @@ view: morat_all {
   dimension: policy_event_date {
     type: date
     sql: ${TABLE}.policy_event_date ;;
+  }
+
+  dimension: policy_event_transaction_date {
+    type: date
+    sql: ${TABLE}.policy_event_transaction_date ;;
   }
 
   dimension: policy_event_status {
@@ -172,6 +180,7 @@ view: morat_all {
   primary_applicant_email,
   policy_event_id,
   policy_event_date,
+  policy_event_transaction_date,
   policy_event_status,
   event_reason_code,
   nonpay_cancellations,
