@@ -1,6 +1,7 @@
 view: protection_period_critical_notices {
   derived_table: {
     sql: select bp.bright_policy_id
+              , cio.message_event_id
               , cio.user_id
               , cio.recipient
               , cio.environment
@@ -44,6 +45,11 @@ view: protection_period_critical_notices {
     sql: ${TABLE}.bright_policy_id ;;
   }
 
+  dimension: message_event_id {
+    type: string
+    sql: ${TABLE}.message_event_id ;;
+  }
+
   dimension: user_id {
     type: string
     sql: ${TABLE}.user_id ;;
@@ -77,6 +83,13 @@ view: protection_period_critical_notices {
   dimension: campaign_name {
     type: string
     sql: ${TABLE}.campaign_name ;;
+  }
+
+  measure: count_of_pp_critical_notices {
+    description: "Distinct count of critical notices sent during protection period."
+    type: count_distinct
+    sql: ${message_event_id}||${bright_policy_id} ;;
+    drill_fields: [detail*]
   }
 
   set: detail {
