@@ -25,6 +25,30 @@ persist_with: moratorium_default_datagroup
 # Typically, join parameters require that you define the join type, join relationship, and a sql_on clause.
 # Each joined view also needs to define a primary key.
 
+explore: protection_period_policies {
+  #group_label: "1. Mart Data Castle"
+  label: "Protection Period"
+  view_label: "Policies"
+  #fields: [ALL_FIELDS*, -mart_operational_report_snapsheet.frequency,-mart_operational_report_snapsheet.loss_ratio]
+
+  join: protection_period_claims {
+    type: left_outer
+    relationship: one_to_one
+    view_label: "Claims"
+    sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_claims.bright_policy_id} ;;
+  }
+
+  #join: mart_people {
+  #  view_label: "People"
+  #  type: left_outer
+  #  relationship: one_to_many
+  #  sql_on: lower(${mart_people.email_address})=lower(${surveymonkey_claims_responses.email_address}) ;;
+  #}
+}
+
+
+
+
 explore: morat_all {}
 
 explore: cancel_all {}
