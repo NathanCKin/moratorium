@@ -94,7 +94,7 @@ view: protection_period_correcting_events {
 
   dimension: policy_event_claims_relevant {
     type: yesno
-    sql: case when ${policy_event_type} in ('PolicyEvent::ExpirationProtectionApplied','PolicyEvent::ExpiredCorrected','PolicyEvent::Extension','PolicyEvent::NonPayCancellationProtectionApplied')
+    sql: case when ${policy_event_type} in ('PolicyEvent::ExpirationProtectionApplied','PolicyEvent::ExpiredCorrected','PolicyEvent::Extension','PolicyEvent::NonPayCancellationProtectionApplied','FixNonPayCancellations')
               then true else false end;;
   }
 
