@@ -70,6 +70,12 @@ view: protection_period_billing_transaction_order {
   dimension: bright_policy_id {
     type: number
     sql: ${TABLE}.bright_policy_id ;;
+    value_format: "0"
+    link: {
+      label: "Kinfo"
+      url:"https://app.kin.com/kintranet/accounting_details/{{value}}"
+      icon_url: "https://www.kin.com/build/images/logos/kin-primary.svg"
+    }
   }
 
   dimension: term {
@@ -84,6 +90,7 @@ view: protection_period_billing_transaction_order {
 
   dimension: due_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.due_date ;;
   }
 
@@ -94,11 +101,13 @@ view: protection_period_billing_transaction_order {
 
   dimension: term_effective_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.term_effective_date ;;
   }
 
   dimension: term_end_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.term_end_date ;;
   }
 
@@ -124,6 +133,7 @@ view: protection_period_billing_transaction_order {
 
   dimension: prior_install_due_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.prior_install_due_date ;;
   }
 

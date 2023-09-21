@@ -27,6 +27,11 @@ view: protection_period_billing_transactions_all {
     type: number
     value_format: "0"
     sql: ${TABLE}.bright_policy_id ;;
+    link: {
+      label: "Kinfo"
+      url:"https://app.kin.com/kintranet/accounting_details/{{value}}"
+      icon_url: "https://www.kin.com/build/images/logos/kin-primary.svg"
+    }
   }
 
   dimension: billing_transaction_id {
@@ -46,6 +51,7 @@ view: protection_period_billing_transactions_all {
 
   dimension: billing_transaction_due_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.billing_transaction_due_date ;;
   }
 
