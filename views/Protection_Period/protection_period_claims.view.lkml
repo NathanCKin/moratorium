@@ -6,14 +6,17 @@ view: protection_period_claims {
             , listagg(claims.status,', ') within group(order by claims.created_at desc) as claim_status
             , listagg(cast(date(claims.datetime_of_loss) as varchar),', ') within group(order by claims.created_at desc) as claim_loss_date
             , listagg(claims.loss_type,', ') within group(order by claims.created_at desc) as claim_loss_type
-            , listagg(coalesce(tags.catastrophe_name,'Non-Cat'),', ') within group(order by claims.created_at desc) as claim_cat_name
+            , listagg(coalesce(cat_name.catastrophe_name,'Non-Cat'),', ') within group(order by claims.created_at desc) as claim_cat_name
+            , listagg(coalesce(tags.pp_tag,'No-PP-Tag'),', ') within group(order by claims.created_at desc) as claim_pp_tag
             from ${protection_period_policies.SQL_TABLE_NAME} as bp
             inner join snapsheet.claims
             on claims.policy_number = bp.full_policy_number
             and date(claims.datetime_of_loss) >= date(bp.protection_period_start_date)
             and date(claims.datetime_of_loss) <= date(bp.protection_period_end_date)
             and claims.status != 'CANCELLED'
-            left join (select claim_id, name as catastrophe_name from snapsheet.tags where name like '%PCS%' and active=true) as tags
+            left join (select claim_id, name as catastrophe_name from snapsheet.tags where name like '%PCS%' and active=true) as cat_name
+            on cat_name.claim_id = claims.id
+            left join (select claim_id, name as pp_tag from snapsheet.tags where trim(name) = 'Protection Period' and active=true) as tags
             on tags.claim_id = claims.id
       group by 1 ;;
     persist_for: "6 hours"
@@ -50,6 +53,11 @@ view: protection_period_claims {
     sql: ${TABLE}.claim_cat_name ;;
   }
 
+  dimension: claim_pp_tag {
+    type: string
+    sql: ${TABLE}.claim_pp_tag ;;
+  }
+
   set: detail {
     fields: [
         bright_policy_id,
@@ -57,7 +65,8 @@ view: protection_period_claims {
   claim_status,
   claim_loss_date,
   claim_loss_type,
-  claim_cat_name
+  claim_cat_name,
+  claim_pp_tag
     ]
   }
 }
