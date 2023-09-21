@@ -114,6 +114,7 @@ view: protection_period_policies {
 
   dimension: policy_inception_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.policy_inception_date ;;
   }
 
@@ -129,6 +130,7 @@ view: protection_period_policies {
 
   dimension: product_effective_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.product_effective_date ;;
   }
 
@@ -139,16 +141,19 @@ view: protection_period_policies {
 
   dimension: protection_period_start_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.protection_period_start_date ;;
   }
 
   dimension: protection_period_end_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.protection_period_end_date ;;
   }
 
   dimension: protection_period_policy_inception_cutoff {
     type: date
+    convert_tz: no
     sql: ${TABLE}.protection_period_policy_inception_cutoff ;;
   }
 

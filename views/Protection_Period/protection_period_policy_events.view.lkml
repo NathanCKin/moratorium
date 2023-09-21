@@ -7,8 +7,8 @@ view: protection_period_policy_events {
             , pe.status as policy_event_status
             , per.event_reason_code
             , pe."type" as policy_event_type
-            , pe."date" as policy_event_effective_date
-            , pe.transaction_date as policy_event_transaction_date
+            , date(pe."date") as policy_event_effective_date
+            , date(pe.transaction_date) as policy_event_transaction_date
             , case when pe."type" = 'PolicyEvent::NonRenewal' then date(dateadd(days,-125,pe."date")) else null end as non_renewal_notice_date
             , row_number() over(partition by pe.bright_policy_id order by pe.created_at desc) as row_num
             from dotcom.policy_events pe
@@ -62,16 +62,19 @@ view: protection_period_policy_events {
 
   dimension: policy_event_effective_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.policy_event_effective_date ;;
   }
 
   dimension: policy_event_transaction_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.policy_event_transaction_date ;;
   }
 
   dimension: non_renewal_notice_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.non_renewal_notice_date ;;
   }
 
@@ -92,7 +95,7 @@ view: protection_period_policy_events {
 
   set: detail {
     fields: [
-        bright_policy_id,
+  bright_policy_id,
   policy_event_id,
   policy_event_effective_date,
   policy_event_transaction_date,

@@ -5,8 +5,8 @@ view: protection_period_correcting_events {
             (select policy_events.bright_policy_id
             , policy_events."type" as policy_event_type
             , policy_events.status as policy_event_status
-            , policy_events."date" as policy_event_effective_date
-            , policy_events.transaction_date as policy_event_transaction_date
+            , date(policy_events."date") as policy_event_effective_date
+            , date(policy_events.transaction_date) as policy_event_transaction_date
             , policy_events.created_at as policy_event_created_at
             , row_number() over(partition by policy_events.bright_policy_id, policy_events."type" order by policy_events."date" desc) as row_num
             from dotcom.policy_events
@@ -79,11 +79,13 @@ view: protection_period_correcting_events {
 
   dimension: policy_event_effective_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.policy_event_effective_date ;;
   }
 
   dimension: policy_event_transaction_date {
     type: date
+    convert_tz: no
     sql: ${TABLE}.policy_event_transaction_date ;;
   }
 
