@@ -56,6 +56,14 @@ explore: protection_period_policies {
     relationship: one_to_many
     sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_critical_notices.bright_policy_id}  ;;
   }
+
+  join: protection_period_billing_transactions_all {
+    view_label: "Billing Transactions"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_billing_transactions_all.bright_policy_id}  ;;
+  }
+
 }
 
 
