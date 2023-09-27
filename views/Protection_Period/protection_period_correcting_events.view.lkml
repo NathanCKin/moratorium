@@ -20,7 +20,8 @@ view: protection_period_correcting_events {
                           ,'PolicyEvent::ExpiredCorrected'
                           ,'PolicyEvent::NonPayCancellationProtectionApplied'
                           ,'PolicyEvent::NonRenewedCorrected'
-                          ,'PolicyEvent::PendingNonRenewalCorrected')
+                          ,'PolicyEvent::PendingNonRenewalCorrected'
+                          , 'PolicyEvent::ReinstateNonPayCancellationsPartTwo'
             )
 
       , policy_activity as
