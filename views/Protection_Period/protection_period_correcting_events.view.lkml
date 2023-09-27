@@ -21,9 +21,9 @@ view: protection_period_correcting_events {
                           ,'PolicyEvent::NonPayCancellationProtectionApplied'
                           ,'PolicyEvent::NonRenewedCorrected'
                           ,'PolicyEvent::PendingNonRenewalCorrected'
-                        
-            )
 
+            )
+-- Testing
       , policy_activity as
             (select policy_activities.bright_policy_id
             , policy_activities.whodunnit as policy_event_type
