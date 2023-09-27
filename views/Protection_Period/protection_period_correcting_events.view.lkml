@@ -21,7 +21,7 @@ view: protection_period_correcting_events {
                           ,'PolicyEvent::NonPayCancellationProtectionApplied'
                           ,'PolicyEvent::NonRenewedCorrected'
                           ,'PolicyEvent::PendingNonRenewalCorrected'
-                          , 'PolicyEvent::ReinstateNonPayCancellationsPartTwo'
+                        
             )
 
       , policy_activity as
@@ -39,7 +39,8 @@ view: protection_period_correcting_events {
             where policy_activities.whodunnit in
                   ('PolicyJobs::NonRenewalNoticeProtection'
                   ,'FixUwCancellations'
-                  ,'FixNonPayCancellations')
+                  ,'FixNonPayCancellations'
+                  ,'ReinstateNonPayCancellationsPartTwo')
             )
 
       select bright_policy_id
