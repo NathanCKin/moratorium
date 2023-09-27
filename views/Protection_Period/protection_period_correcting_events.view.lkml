@@ -20,7 +20,7 @@ view: protection_period_correcting_events {
                           ,'PolicyEvent::ExpiredCorrected'
                           ,'PolicyEvent::NonPayCancellationProtectionApplied'
                           ,'PolicyEvent::NonRenewedCorrected'
-                          ,'PolicyEvent::PendingNonRenewalCorrected'
+                          ,'PolicyEvent::PendingNonRenewalCorrected')
 
             )
 -- Testing
