@@ -1,5 +1,5 @@
 
-view: protection_period_billing_transaction_order {
+view: protection_period_billing_transactions_order {
   derived_table: {
     sql:
       with billing_installs as

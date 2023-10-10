@@ -64,11 +64,11 @@ explore: protection_period_policies {
     sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_billing_transactions_all.bright_policy_id}  ;;
   }
 
-  join: protection_period_billing_transaction_order {
+  join: protection_period_billing_transactions_order {
     view_label: "Billing Transactions Out of Order"
     type: left_outer
     relationship: one_to_many
-    sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_billing_transaction_order.bright_policy_id}  ;;
+    sql_on: ${protection_period_policies.bright_policy_id} = ${protection_period_billing_transactions_order.bright_policy_id}  ;;
   }
 
 }
